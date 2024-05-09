@@ -15,8 +15,8 @@ model = dict(
                 type='CrossEntropyLoss',
                 loss_name='loss_ce',
                 loss_weight=1.0,
-                #class_weight=[1.0, 2.0, 10.0]  # Example weights for three classes
                 class_weight=[1.0, 10.0]  # Example weights for three classes
+                #class_weight=[1.0, 10.0]  # Example weights for three classes
         ),
         dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
     ])
