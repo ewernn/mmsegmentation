@@ -9,7 +9,7 @@ class SolarHoofDataset(PascalVOCDataset):
 
     METAINFO = dict(
         classes=('background', 'hoof_solar', 'new_scale'),
-        palette=[[120, 120, 120], [6, 230, 230], [6, 230, 230]]
+        palette=[[120, 120, 120], [6, 230, 230], [255, 20, 147]]
     )
 
     def __init__(self,
