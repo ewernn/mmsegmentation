@@ -11,18 +11,20 @@ model = dict(
 
     decode_head=dict(
         num_classes=3,
-        loss_decode=[
-            dict(
-                type='CrossEntropyLoss',
-                loss_name='loss_ce',
-                loss_weight=1.0,
-                #class_weight=[1.0, 2.0, 10.0]  # Example weights for three classes
-                class_weight=[1.0, 2.0, 10.0],  # Example weights for three classes
-                avg_non_ignore=True
-
-            ),
-            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
-    ])
+        # loss_decode=[
+        #     dict(
+        #         type='CrossEntropyLoss',
+        #         loss_name='loss_ce',
+        #         loss_weight=1.0,
+        #         #class_weight=[1.0, 2.0, 10.0]  # Example weights for three classes
+        #         class_weight=[1.0, 2.0, 10.0],  # Example weights for three classes
+        #         avg_non_ignore=True
+        #     ),
+        #     dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
+        # ]
+        loss_decode=dict(
+            type='CrossEntropyLoss', use_sigmoid=False, loss_weight=1.0)
+    )
 )
 
 # schedule modifications
