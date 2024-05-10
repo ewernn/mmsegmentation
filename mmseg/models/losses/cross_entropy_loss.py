@@ -55,21 +55,27 @@ def cross_entropy(pred,
     # pytorch's official cross_entropy average loss over non-ignored elements
     # refer to https://github.com/pytorch/pytorch/blob/56b43f4fec1f76953f15a627694d4bba34588969/torch/nn/functional.py#L2660  # noqa
     if (avg_factor is None) and reduction == 'mean':
-        if class_weight is None:
+        if class_weight is not None:
+            # Ensure class_weight is a float tensor and on the correct device
+            class_weight = class_weight.float()
+            class_weight = class_weight.to(label.device)
+
+            # Create a weight map based on labels using indexing
+            label_weights = class_weight[label]
+
+            # Zero out the weights where label is ignore_index
             if avg_non_ignore:
-                avg_factor = label.numel() - (label
-                                              == ignore_index).sum().item()
+                label_weights[label == ignore_index] = 0
+
+            # Sum the weights to get the average factor
+            avg_factor = label_weights.sum()
+        else:
+            # If there is no class_weight, compute avg_factor based on non-ignored labels or total elements
+            if avg_non_ignore:
+                avg_factor = (label != ignore_index).sum().item()
             else:
                 avg_factor = label.numel()
 
-        else:
-            # the average factor should take the class weights into account
-            label_weights = torch.stack([class_weight[cls] for cls in label
-                                         ]).to(device=class_weight.device)
-
-            if avg_non_ignore:
-                label_weights[label == ignore_index] = 0
-            avg_factor = label_weights.sum()
 
     if weight is not None:
         weight = weight.float()
