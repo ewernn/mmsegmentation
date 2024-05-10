@@ -9,16 +9,17 @@ model = dict(
     #test_cfg=dict(crop_size=(256, 256), stride=(170, 170)),
     test_cfg=dict(mode='whole'),
 
-    decode_head=dict(loss_decode=[
-        #dict(type='CrossEntropyLoss', loss_name='loss_ce', loss_weight=1.0),
-        dict(
+    decode_head=dict(
+        num_classes=3,
+        loss_decode=[
+            dict(
                 type='CrossEntropyLoss',
                 loss_name='loss_ce',
                 loss_weight=1.0,
-                class_weight=[1.0, 10.0]  # Example weights for three classes
-                #class_weight=[1.0, 10.0]  # Example weights for three classes
-        ),
-        dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
+                #class_weight=[1.0, 2.0, 10.0]  # Example weights for three classes
+                class_weight=[2.0, 10.0]  # Example weights for three classes
+            ),
+            dict(type='DiceLoss', loss_name='loss_dice', loss_weight=3.0)
     ])
 )
 

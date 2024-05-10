@@ -8,10 +8,8 @@ from mmseg.registry import DATASETS
 class SolarHoofDataset(PascalVOCDataset):
 
     METAINFO = dict(
-        classes=('hoof_solar', 'new_scale'),
-        palette=[[6, 230, 230], [56, 59, 120]]
-        # classes=('background', 'hoof_solar', 'new_scale'),
-        # palette=[[120, 120, 120], [6, 230, 230], [56, 59, 120]]
+        classes=('background', 'hoof_solar', 'new_scale'),
+        palette=[[120, 120, 120], [6, 230, 230], [56, 59, 120]]
     )
 
     def __init__(self,
