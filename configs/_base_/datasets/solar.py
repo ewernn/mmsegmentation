@@ -17,7 +17,7 @@ train_pipeline = [
     #dict(type='PhotoMetricDistortion'),
     dict(type='PhotoMetricDistortion', brightness_delta=32,contrast_range=(0.5, 1.5),saturation_range=(0.5, 1.5),hue_delta=18),
     dict(type='Resize', scale=img_scale, keep_ratio=True),
-    dict(type='Pad', size=(512, 512), pad_val=0),# seg_pad_val=255),
+    #dict(type='Pad', size=(512, 512), pad_val=0),# seg_pad_val=255),
     dict(type='PackSegInputs')
 ]
 
