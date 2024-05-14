@@ -1,8 +1,8 @@
 # dataset settings
-dataset_type = 'SolarHoofDataset'  # Update the dataset type if needed
+dataset_type = 'LatHoofDataset'  # Update the dataset type if needed
 #data_root = 'data/voc_data'  # Update the data root path to where your dataset is stored
-data_root = 'data/data_no_scale_out'  # Update the data root path to where your dataset is stored
-custom_imports = dict(imports=['mmseg.datasets.hoof_solar'], allow_failed_imports=False)
+data_root = 'data/hoof_lat_block_voc'  # Update the data root path to where your dataset is stored
+custom_imports = dict(imports=['mmseg.datasets.hoof_lat_block'], allow_failed_imports=False)
 
 
 # Assuming the images are of a uniform size, specify the actual size if known
@@ -11,20 +11,20 @@ img_scale = (512, 512)  # Update this based on your image sizes
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations'),
-    dict(type='RandomResize', scale=img_scale, ratio_range=(0.5, 2.0), keep_ratio=True),
+    #dict(type='RandomResize', scale=img_scale, ratio_range=(0.5, 2.0), keep_ratio=False),
     #dict(type='RandomCrop', crop_size=(256, 256), cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5, direction='horizontal'),
     dict(type='RandomRotate',degree=20,prob=0.5,pad_val=0),#seg_pad_val=255),
     #dict(type='PhotoMetricDistortion'),
     dict(type='PhotoMetricDistortion', brightness_delta=32,contrast_range=(0.5, 1.5),saturation_range=(0.5, 1.5),hue_delta=18),
-    dict(type='Resize', scale=img_scale, keep_ratio=True),
+    dict(type='Resize', scale=img_scale, keep_ratio=False),
     #dict(type='Pad', size=(512, 512), pad_val=0),# seg_pad_val=255),
     dict(type='PackSegInputs')
 ]
 
 val_pipeline = [
     dict(type='LoadImageFromFile'),
-    dict(type='Resize', scale=img_scale, keep_ratio=True),
+    dict(type='Resize', scale=img_scale, keep_ratio=False),
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
 ]
@@ -37,7 +37,7 @@ tta_pipeline = [
         type='TestTimeAug',
         transforms=[
             [
-                dict(type='Resize', scale_factor=r, keep_ratio=True)
+                dict(type='Resize', scale_factor=r, keep_ratio=False)
                 for r in img_ratios
             ],
             [
