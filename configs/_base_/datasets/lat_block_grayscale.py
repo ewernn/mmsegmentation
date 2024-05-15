@@ -9,21 +9,19 @@ custom_imports = dict(imports=['mmseg.datasets.hoof_lat_block'], allow_failed_im
 img_scale = (512, 512)  # Update this based on your image sizes
 #color_type
 train_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', color_type='grayscale'),
     dict(type='LoadAnnotations'),
     #dict(type='RandomResize', scale=img_scale, ratio_range=(0.5, 2.0), keep_ratio=False),
     #dict(type='RandomCrop', crop_size=(256, 256), cat_max_ratio=0.75),
     dict(type='RandomFlip', prob=0.5, direction='horizontal'),
     dict(type='RandomRotate',degree=20,prob=0.5,pad_val=0),#seg_pad_val=255),
-    #dict(type='PhotoMetricDistortion'),
-    dict(type='PhotoMetricDistortion', brightness_delta=32,contrast_range=(0.5, 1.5),saturation_range=(0.5, 1.5),hue_delta=18),
     dict(type='Resize', scale=img_scale, keep_ratio=False),
     #dict(type='Pad', size=(512, 512), pad_val=0),# seg_pad_val=255),
     dict(type='PackSegInputs')
 ]
 
 val_pipeline = [
-    dict(type='LoadImageFromFile'),
+    dict(type='LoadImageFromFile', color_type='grayscale'),
     dict(type='Resize', scale=img_scale, keep_ratio=False),
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
@@ -34,7 +32,7 @@ test_pipeline = val_pipeline
 # Test Time Augmentation (TTA) setup
 img_ratios = [0.5, 0.75, 1.0, 1.25, 1.5, 1.75]  # Adjust these ratios based on the typical image scales
 tta_pipeline = [
-    dict(type='LoadImageFromFile', backend_args=None),
+    dict(type='LoadImageFromFile', color_type='grayscale', backend_args=None),
     dict(
         type='TestTimeAug',
         transforms=[
