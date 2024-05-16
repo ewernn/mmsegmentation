@@ -106,6 +106,7 @@ venv.bak/
 .mypy_cache/
 
 data/hoof_lat_block_voc
+data/*
 .vscode
 .idea
 
