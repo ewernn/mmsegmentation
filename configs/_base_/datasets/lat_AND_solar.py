@@ -1,7 +1,7 @@
 # dataset settings
 dataset_type = 'LatAndSolarHoofDataset'  # Update the dataset type if needed
 #data_root = 'data/voc_data'  # Update the data root path to where your dataset is stored
-data_root = '../voc_lat_AND_solar'  # Update the data root path to where your dataset is stored
+data_root = 'data/voc_lat_AND_solar'  # Update the data root path to where your dataset is stored
 custom_imports = dict(imports=['mmseg.datasets.hoof_lat_AND_solar'], allow_failed_imports=False)
 
 
