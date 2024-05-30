@@ -1,5 +1,5 @@
 _base_ = [
-    '../_base_/models/fcn_unet_s5-d16-1channel.py', '../_base_/datasets/lat_AND_solar.py',
+    '../_base_/models/fcn_unet_s5-d16-1channel.py', '../_base_/datasets/noBackground.py',
     '../_base_/default_runtime.py', '../_base_/schedules/schedule_20k.py'
 ]
 crop_size = (512,512)

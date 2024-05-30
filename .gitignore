@@ -106,6 +106,7 @@ venv.bak/
 .mypy_cache/
 
 data/hoof_lat_block_voc
+data/voc_lat_AND_solar
 data/*
 .vscode
 .idea
