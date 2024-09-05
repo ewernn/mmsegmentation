@@ -1,5 +1,6 @@
 # Copyright (c) OpenMMLab. All rights reserved.
 # yapf: disable
+from .cat_kidney import CatKidneyDataset
 from .hoof_lat_AND_solar import LatAndSolarHoofDataset
 from .hoof_lat_block import LatHoofDataset
 from .hoof_solar import SolarHoofDataset
@@ -46,7 +47,7 @@ from .voc import PascalVOCDataset
 
 # yapf: enable
 __all__ = [
-    'LatAndSolarHoofDataset', 'LatHoofDataset', 'SolarHoofDataset', 'BaseSegDataset', 'BioMedical3DRandomCrop', 'BioMedical3DRandomFlip',
+    'CatKidneyDataset', 'LatAndSolarHoofDataset', 'LatHoofDataset', 'SolarHoofDataset', 'BaseSegDataset', 'BioMedical3DRandomCrop', 'BioMedical3DRandomFlip',
     'CityscapesDataset', 'PascalVOCDataset', 'ADE20KDataset',
     'PascalContextDataset', 'PascalContextDataset59', 'ChaseDB1Dataset',
     'DRIVEDataset', 'HRFDataset', 'STAREDataset', 'DarkZurichDataset',
