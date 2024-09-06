@@ -2,7 +2,7 @@
 dataset_type = 'CatKidneyDataset'  # Update the dataset type if needed
 ################### TO CHANGE data_root #########################
 #data_root = 'data/hoof_lat_block_voc'  # Update the data root path to where your dataset is stored
-data_root = '/content/drive/MyDrive/MM/Seg/datasets/cat_kidney_dataset_csv_filtered_512_VOC'  
+data_root = '/content/drive/MyDrive/MM/Seg/datasets/cat_kidney_dataset_csv_filtered_VOC'  
 custom_imports = dict(imports=['mmseg.datasets.cat_kidney'], allow_failed_imports=False)
 
 
