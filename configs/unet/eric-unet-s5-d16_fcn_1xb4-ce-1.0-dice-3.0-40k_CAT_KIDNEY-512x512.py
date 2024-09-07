@@ -33,6 +33,5 @@ default_hooks = dict(
         draw=True,
         interval=1,
         show=False,  # Set this to False to ensure saving instead of showing
-        backend='local'
     )
 )
