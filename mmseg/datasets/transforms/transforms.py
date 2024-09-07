@@ -748,7 +748,43 @@ class PhotoMetricDistortion(BaseTransform):
                      f'hue_delta={self.hue_delta})')
         return repr_str
 
+@TRANSFORMS.register_module()
+class GrayscalePhotoMetricDistortion(BaseTransform):
+    def __init__(self,
+                 brightness_delta: int = 32,
+                 contrast_range: Sequence[float] = (0.5, 1.5)):
+        self.brightness_delta = brightness_delta
+        self.contrast_lower, self.contrast_upper = contrast_range
 
+    def convert(self, img: np.ndarray, alpha: float = 1, beta: float = 0) -> np.ndarray:
+        img = img.astype(np.float32) * alpha + beta
+        img = np.clip(img, 0, 255)
+        return img.astype(np.uint8)
+
+    def brightness(self, img: np.ndarray) -> np.ndarray:
+        if random.randint(2):
+            return self.convert(img, beta=random.uniform(-self.brightness_delta, self.brightness_delta))
+        return img
+
+    def contrast(self, img: np.ndarray) -> np.ndarray:
+        if random.randint(2):
+            return self.convert(img, alpha=random.uniform(self.contrast_lower, self.contrast_upper))
+        return img
+
+    def transform(self, results: dict) -> dict:
+        img = results['img']
+        img = self.brightness(img)
+        img = self.contrast(img)
+        results['img'] = img
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += (f'(brightness_delta={self.brightness_delta}, '
+                     f'contrast_range=({self.contrast_lower}, '
+                     f'{self.contrast_upper}))')
+        return repr_str
+    
 @TRANSFORMS.register_module()
 class RandomCutOut(BaseTransform):
     """CutOut operation.
