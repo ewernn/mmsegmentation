@@ -10,7 +10,16 @@ optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=500)
 
+crop_size = (512, 512)
+data_preprocessor = dict(
+    type='SegDataPreProcessor',
+    size=crop_size,
+    pad_val=0,
+    seg_pad_val=255
+)
+
 model = dict(
+    data_preprocessor=data_preprocessor,
     test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)),
     decode_head=dict(
         num_classes=3,
