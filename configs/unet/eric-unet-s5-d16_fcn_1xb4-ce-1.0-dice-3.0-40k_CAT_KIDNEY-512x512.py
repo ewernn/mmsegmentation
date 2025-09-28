@@ -13,7 +13,7 @@ train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=50)
 crop_size = (512, 512)
 data_preprocessor = dict(
     type='SegDataPreProcessor',
-    size_divisor=32,
+    size=crop_size,
     pad_val=0,
     seg_pad_val=255
 )
