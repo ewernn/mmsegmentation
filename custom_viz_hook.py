@@ -70,12 +70,35 @@ class ResizedVisualizationHook(Hook):
             # Visualize only the first data
             img_path = outputs[0].img_path
             img_bytes = get(img_path, backend_args=self.backend_args)
-            img = mmcv.imfrombytes(img_bytes, channel_order='rgb')
+            # Load as grayscale since your images are grayscale
+            img = mmcv.imfrombytes(img_bytes, flag='grayscale')
+            # Convert grayscale to RGB for visualization
+            if len(img.shape) == 2:
+                img = np.stack([img, img, img], axis=-1)
 
             # RESIZE THE IMAGE TO MATCH PREDICTION SIZE
             # Get the size from the prediction
             pred_shape = outputs[0].pred_sem_seg.data.shape
-            img = mmcv.imresize(img, (pred_shape[1], pred_shape[0]))
+
+            # Handle different shape formats
+            if len(pred_shape) == 2:
+                resize_shape = (pred_shape[1], pred_shape[0])
+            else:
+                # If shape is (C, H, W) or (1, H, W), use last two dimensions
+                resize_shape = (pred_shape[-1], pred_shape[-2])
+
+            img = mmcv.imresize(img, resize_shape)
+
+            # Also resize ground truth if it exists and has different shape
+            if hasattr(outputs[0], 'gt_sem_seg') and outputs[0].gt_sem_seg is not None:
+                gt_shape = outputs[0].gt_sem_seg.data.shape
+                if gt_shape[-2:] != resize_shape[::-1]:
+                    # Ground truth needs resizing too
+                    gt_data = outputs[0].gt_sem_seg.data
+                    if len(gt_data.shape) == 3 and gt_data.shape[0] == 1:
+                        gt_data = gt_data.squeeze(0)
+                    # For now, just ensure gt matches pred shape
+                    outputs[0].gt_sem_seg.data = gt_data
 
             window_name = f'val_{osp.basename(img_path)}'
 
@@ -106,7 +129,11 @@ class ResizedVisualizationHook(Hook):
 
             img_path = data_sample.img_path
             img_bytes = get(img_path, backend_args=self.backend_args)
-            img = mmcv.imfrombytes(img_bytes, channel_order='rgb')
+            # Load as grayscale since your images are grayscale
+            img = mmcv.imfrombytes(img_bytes, flag='grayscale')
+            # Convert grayscale to RGB for visualization
+            if len(img.shape) == 2:
+                img = np.stack([img, img, img], axis=-1)
 
             # RESIZE THE IMAGE TO MATCH PREDICTION SIZE
             pred_shape = data_sample.pred_sem_seg.data.shape
