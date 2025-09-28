@@ -205,6 +205,72 @@ class CLAHE(BaseTransform):
 
 
 @TRANSFORMS.register_module()
+class CLAHEGrayscale(BaseTransform):
+    """Use CLAHE method to process grayscale images.
+
+    This is a grayscale-compatible version of CLAHE that handles both
+    2D (H, W) and 3D (H, W, 1) or (H, W, C) image arrays.
+
+    Required Keys:
+
+    - img
+
+    Modified Keys:
+
+    - img
+
+    Args:
+        clip_limit (float): Threshold for contrast limiting. Default: 40.0.
+        tile_grid_size (tuple[int]): Size of grid for histogram equalization.
+            Input image will be divided into equally sized rectangular tiles.
+            It defines the number of tiles in row and column. Default: (8, 8).
+    """
+
+    def __init__(self, clip_limit=40.0, tile_grid_size=(8, 8)):
+        assert isinstance(clip_limit, (float, int))
+        self.clip_limit = clip_limit
+        assert is_tuple_of(tile_grid_size, int)
+        assert len(tile_grid_size) == 2
+        self.tile_grid_size = tile_grid_size
+
+    def transform(self, results: dict) -> dict:
+        """Call function to use CLAHE method to process images.
+
+        Args:
+            results (dict): Result dict from loading pipeline.
+
+        Returns:
+            dict: Processed results.
+        """
+        img = results['img']
+
+        if len(img.shape) == 2:
+            results['img'] = mmcv.clahe(
+                np.array(img, dtype=np.uint8),
+                self.clip_limit,
+                self.tile_grid_size
+            )
+        elif len(img.shape) == 3:
+            for i in range(img.shape[2]):
+                results['img'][:, :, i] = mmcv.clahe(
+                    np.array(img[:, :, i], dtype=np.uint8),
+                    self.clip_limit,
+                    self.tile_grid_size
+                )
+        else:
+            raise ValueError(f"Unexpected image shape: {img.shape}. "
+                           f"Expected 2D (H, W) or 3D (H, W, C) array.")
+
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(clip_limit={self.clip_limit}, ' \
+                    f'tile_grid_size={self.tile_grid_size})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
 class RandomCrop(BaseTransform):
     """Random crop the image & seg.
 
