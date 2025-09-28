@@ -8,7 +8,7 @@ _base_ = [
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=500)
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=50)
 
 crop_size = (512, 512)
 data_preprocessor = dict(
@@ -20,7 +20,7 @@ data_preprocessor = dict(
 
 model = dict(
     data_preprocessor=data_preprocessor,
-    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)),
+    test_cfg=dict(mode='whole'),
     decode_head=dict(
         num_classes=3,
         dropout_ratio=0.2,
