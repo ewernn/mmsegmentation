@@ -11,7 +11,7 @@ custom_imports = dict(imports=['custom_viz_hook'], allow_failed_imports=False)
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=50)
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=500)
 
 crop_size = (512, 512)
 data_preprocessor = dict(
@@ -78,7 +78,7 @@ default_hooks = dict(
     visualization=dict(
         type='ResizedVisualizationHook',  # Custom hook that resizes images
         draw=True,  # Now enabled!
-        interval=50,
+        interval=500,  # Visualize every 500 iterations
         show=False
     )
 )
