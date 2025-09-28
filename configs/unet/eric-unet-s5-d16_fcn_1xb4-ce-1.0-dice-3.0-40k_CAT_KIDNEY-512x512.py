@@ -31,6 +31,10 @@ model = dict(
             dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[0.5, 2.0, 2.0]),
             dict(type='DiceLoss', use_sigmoid=False, loss_weight=0.6)
         ]
+    ),
+    auxiliary_head=dict(
+        num_classes=3,
+        loss_decode=dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[0.5, 2.0, 2.0])
     )
 )
 

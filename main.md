@@ -107,16 +107,17 @@ To work on:
 - Cat kidney segmentation (3 classes: background, left_kidney, right_kidney)
 - Grayscale image support with CLAHE preprocessing (clip_limit=4.0)
 - Label remapping for masks with non-standard values ([0,38,75] → [0,1,2])
-- Per-class Dice metrics during training (decode_head.py modified)
+- Per-class Dice metrics during training (decode_head.py:339-350)
 - Early stopping (patience=3, monitors mDice)
 - Best checkpoint saving (save_best='mDice', keep last 3 regular checkpoints)
-- WandB logging with project metadata
-- Validation images saved locally and uploaded to WandB
-- Slide inference for test-time (handles images larger than 512x512)
+- WandB logging with per-class metrics
+- Custom visualization hook for grayscale images (custom_viz_hook.py)
+- Validation every 500 iterations with per-class metrics
+- ResetOriShape transform to handle 1000x1000→512x512 resize
 
 **Known Issues**:
-- Validation requires `test_cfg=dict(mode='slide')` with proper crop_size, `mode='whole'` causes shape mismatch
-- Data preprocessor must have `size` set or validation fails
+- Visualization requires custom hook due to grayscale images and size mismatch
+- ResetOriShape required in val_pipeline to keep predictions at 512x512
 - Label remapping must happen AFTER all transforms (before PackSegInputs) to avoid interpolation issues
 
 ## Training Pipeline Details
@@ -136,10 +137,11 @@ To work on:
 ## Custom Modifications
 
 **Files modified from base MMSegmentation**:
-- `mmseg/datasets/transforms/transforms.py` - Added CLAHEGrayscale (line 207-270), RemapLabels (line 273-313)
-- `mmseg/datasets/transforms/__init__.py` - Exported CLAHEGrayscale, RemapLabels
+- `mmseg/datasets/transforms/transforms.py` - Added CLAHEGrayscale (line 208-270), RemapLabels (line 274-313), ResetOriShape (line 317-330)
+- `mmseg/datasets/transforms/__init__.py` - Exported CLAHEGrayscale, RemapLabels, ResetOriShape
 - `mmseg/datasets/cat_kidney.py` - Custom dataset with label_map override in get_label_map()
-- `mmseg/models/decode_heads/decode_head.py` - Added per-class Dice computation (line 339-350)
+- `mmseg/models/decode_heads/decode_head.py` - Added per-class Dice computation (line 339-352)
+- `custom_viz_hook.py` - Custom visualization hook for grayscale images with size correction
 
 ## Additional Documentation
 
