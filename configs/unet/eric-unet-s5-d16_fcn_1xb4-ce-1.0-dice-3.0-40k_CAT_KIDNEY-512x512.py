@@ -5,6 +5,9 @@ _base_ = [
     '../_base_/schedules/schedule_20k.py'
 ]
 
+# Import custom visualization hook
+custom_imports = dict(imports=['custom_viz_hook'], allow_failed_imports=False)
+
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
@@ -73,9 +76,9 @@ default_hooks = dict(
         min_delta=0.001
     ),
     visualization=dict(
-        type='SegVisualizationHook',
-        draw=True,
-        interval=50,  # Visualize every 50 iterations
+        type='ResizedVisualizationHook',  # Custom hook that resizes images
+        draw=True,  # Now enabled!
+        interval=50,
         show=False
     )
 )
