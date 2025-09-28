@@ -335,6 +335,20 @@ class BaseDecodeHead(BaseModule, metaclass=ABCMeta):
 
         loss['acc_seg'] = accuracy(
             seg_logits, seg_label, ignore_index=self.ignore_index)
+
+        # Compute per-class Dice for training monitoring
+        with torch.no_grad():
+            pred = seg_logits.softmax(dim=1)
+            num_classes = pred.shape[1]
+            for cls_idx in range(num_classes):
+                cls_pred = pred[:, cls_idx, :, :]
+                cls_target = (seg_label == cls_idx).float()
+                intersection = (cls_pred * cls_target).sum()
+                union = cls_pred.sum() + cls_target.sum()
+                if union > 0:
+                    dice = (2.0 * intersection) / (union + 1e-5)
+                    loss[f'dice_class_{cls_idx}'] = dice
+
         return loss
 
     def predict_by_feat(self, seg_logits: Tensor,
