@@ -271,6 +271,49 @@ class CLAHEGrayscale(BaseTransform):
 
 
 @TRANSFORMS.register_module()
+class RemapLabels(BaseTransform):
+    """Remap segmentation label values.
+
+    Required Keys:
+
+    - gt_seg_map
+
+    Modified Keys:
+
+    - gt_seg_map
+
+    Args:
+        label_map (dict): Mapping from old label values to new values.
+            e.g., {0: 0, 38: 1, 75: 2}
+    """
+
+    def __init__(self, label_map):
+        self.label_map = label_map
+
+    def transform(self, results: dict) -> dict:
+        """Remap label values in gt_seg_map.
+
+        Args:
+            results (dict): Result dict containing gt_seg_map.
+
+        Returns:
+            dict: Results with remapped labels.
+        """
+        if 'gt_seg_map' in results:
+            seg_map = results['gt_seg_map']
+            remapped = np.zeros_like(seg_map)
+            for old_val, new_val in self.label_map.items():
+                remapped[seg_map == old_val] = new_val
+            results['gt_seg_map'] = remapped
+        return results
+
+    def __repr__(self):
+        repr_str = self.__class__.__name__
+        repr_str += f'(label_map={self.label_map})'
+        return repr_str
+
+
+@TRANSFORMS.register_module()
 class RandomCrop(BaseTransform):
     """Random crop the image & seg.
 
