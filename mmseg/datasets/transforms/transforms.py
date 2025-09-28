@@ -314,6 +314,23 @@ class RemapLabels(BaseTransform):
 
 
 @TRANSFORMS.register_module()
+class ResetOriShape(BaseTransform):
+    """Reset ori_shape to img_shape after resize.
+
+    This is needed when images are resized but ori_shape metadata
+    is still used for output size during inference, causing shape mismatches.
+    """
+
+    def transform(self, results: dict) -> dict:
+        """Reset ori_shape to current img_shape."""
+        results['ori_shape'] = results['img_shape']
+        return results
+
+    def __repr__(self):
+        return self.__class__.__name__
+
+
+@TRANSFORMS.register_module()
 class RandomCrop(BaseTransform):
     """Random crop the image & seg.
 
