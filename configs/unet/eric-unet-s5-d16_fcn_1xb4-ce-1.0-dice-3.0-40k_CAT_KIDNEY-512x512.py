@@ -8,7 +8,7 @@ _base_ = [
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=50)
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=500)
 
 crop_size = (512, 512)
 data_preprocessor = dict(
@@ -74,7 +74,7 @@ default_hooks = dict(
     ),
     visualization=dict(
         type='SegVisualizationHook',
-        draw=True,
+        draw=False,  # Disable visualization to avoid size mismatch issues
         interval=1,
         show=False,
     )
