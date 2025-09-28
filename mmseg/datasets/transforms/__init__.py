@@ -5,7 +5,7 @@ from .loading import (LoadAnnotations, LoadBiomedicalAnnotation,
                       LoadDepthAnnotation, LoadImageFromNDArray,
                       LoadMultipleRSImageFromFile, LoadSingleRSImageFromFile)
 # yapf: disable
-from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
+from .transforms import (CLAHE, CLAHEGrayscale, RemapLabels, AdjustGamma, Albu, BioMedical3DPad,
                          BioMedical3DRandomCrop, BioMedical3DRandomFlip,
                          BioMedicalGaussianBlur, BioMedicalGaussianNoise,
                          BioMedicalRandomGamma, ConcatCDInput, GenerateEdge,
@@ -18,7 +18,7 @@ from .transforms import (CLAHE, AdjustGamma, Albu, BioMedical3DPad,
 # yapf: enable
 __all__ = [
     'LoadAnnotations', 'RandomCrop', 'BioMedical3DRandomCrop', 'SegRescale',
-    'GrayscalePhotoMetricDistortion', 'PhotoMetricDistortion', 'RandomRotate', 'AdjustGamma', 'CLAHE', 'Rerange',
+    'GrayscalePhotoMetricDistortion', 'PhotoMetricDistortion', 'RandomRotate', 'AdjustGamma', 'CLAHE', 'CLAHEGrayscale', 'RemapLabels', 'Rerange',
     'RGB2Gray', 'RandomCutOut', 'RandomMosaic', 'PackSegInputs',
     'ResizeToMultiple', 'LoadImageFromNDArray', 'LoadBiomedicalImageFromFile',
     'LoadBiomedicalAnnotation', 'LoadBiomedicalData', 'GenerateEdge',
