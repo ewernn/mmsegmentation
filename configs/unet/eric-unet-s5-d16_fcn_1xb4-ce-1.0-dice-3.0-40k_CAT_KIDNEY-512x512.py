@@ -8,7 +8,7 @@ _base_ = [
 # Import custom visualization hook
 custom_imports = dict(imports=['custom_viz_hook'], allow_failed_imports=False)
 
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
+optimizer = dict(type='SGD', lr=0.005, momentum=0.9, weight_decay=0.0005)  # Reduced LR for stability
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=500)
@@ -18,7 +18,7 @@ data_preprocessor = dict(
     type='SegDataPreProcessor',
     size=crop_size,
     pad_val=0,
-    seg_pad_val=255
+    seg_pad_val=0  # Changed from 255 to 0 to match background class
 )
 
 model = dict(
@@ -28,13 +28,13 @@ model = dict(
         num_classes=3,
         dropout_ratio=0.2,
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[0.5, 2.0, 2.0]),
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[0.5, 5.0, 5.0]),  # Increased kidney weights
             dict(type='DiceLoss', use_sigmoid=False, loss_weight=0.6)
         ]
     ),
     auxiliary_head=dict(
         num_classes=3,
-        loss_decode=dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[0.5, 2.0, 2.0])
+        loss_decode=dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[0.5, 5.0, 5.0])  # Match main head weights
     )
 )
 
