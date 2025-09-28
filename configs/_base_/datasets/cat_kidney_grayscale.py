@@ -13,7 +13,7 @@ img_scale = (512, 512)  # Update this based on your image sizes
 train_pipeline = [
     dict(type='LoadImageFromFile', color_type='grayscale'),
     dict(type='LoadAnnotations'),
-    dict(type='CLAHE', clip_limit=40.0, tile_grid_size=(8, 8)),
+    dict(type='CLAHE', clip_limit=4.0, tile_grid_size=(8, 8)),
     #dict(type='RandomResize', scale=img_scale, ratio_range=(0.5, 2.0), keep_ratio=False),
     #dict(type='RandomCrop', crop_size=(256, 256), cat_max_ratio=0.75),
     #dict(type='RandomFlip', prob=0.5, direction='horizontal'),
@@ -26,7 +26,7 @@ train_pipeline = [
 
 val_pipeline = [
     dict(type='LoadImageFromFile', color_type='grayscale'),
-    dict(type='CLAHE', clip_limit=40.0, tile_grid_size=(8, 8)),
+    dict(type='CLAHE', clip_limit=4.0, tile_grid_size=(8, 8)),
     dict(type='Resize', scale=img_scale, keep_ratio=False),
     dict(type='LoadAnnotations'),
     dict(type='PackSegInputs')
