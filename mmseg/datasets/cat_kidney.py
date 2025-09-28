@@ -9,7 +9,8 @@ class CatKidneyDataset(PascalVOCDataset):
 
     METAINFO = dict(
         classes=('background', 'left_kidney', 'right_kidney'),
-        palette=[[120, 120, 120], [6, 230, 230], [56, 59, 120]]
+        palette=[[120, 120, 120], [6, 230, 230], [56, 59, 120]],
+        label_map={0: 0, 38: 1, 75: 2}
     )
 
     def __init__(self,
