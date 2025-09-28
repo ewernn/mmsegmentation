@@ -26,7 +26,6 @@ val_pipeline = [
     dict(type='LoadAnnotations'),
     dict(type='CLAHEGrayscale', clip_limit=4.0, tile_grid_size=(8, 8)),
     dict(type='Resize', scale=img_scale, keep_ratio=False),
-    dict(type='ResetOriShape'),  # Fix ori_shape to match resized dimensions
     dict(type='RemapLabels', label_map={0: 0, 38: 1, 75: 2}),
     dict(type='PackSegInputs')
 ]
