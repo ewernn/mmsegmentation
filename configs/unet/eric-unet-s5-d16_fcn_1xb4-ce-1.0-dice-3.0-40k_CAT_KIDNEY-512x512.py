@@ -10,12 +10,8 @@ optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=500)
 
-crop_size = (512, 512)
-data_preprocessor = dict(size=crop_size)
-
 model = dict(
-    data_preprocessor=data_preprocessor,
-    test_cfg=dict(mode='whole'),
+    test_cfg=dict(mode='slide', crop_size=(512, 512), stride=(341, 341)),
     decode_head=dict(
         num_classes=3,
         dropout_ratio=0.2,
