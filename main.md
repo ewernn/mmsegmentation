@@ -104,6 +104,7 @@ To work on:
 ## Recent Critical Fixes (Sep 2025)
 
 **Fixed Issues**:
+- **CRITICAL**: RemapLabels was trying to remap [0,38,75]→[0,1,2] but masks already had [0,1,2] - DISABLED RemapLabels
 - RandomRotate was using default seg_pad_val=255 causing unmapped values - fixed to seg_pad_val=0
 - Data preprocessor seg_pad_val was 255 causing label corruption - fixed to 0
 - Auxiliary head was missing CrossEntropyLoss with class weights - added matching main head config
@@ -115,7 +116,7 @@ To work on:
 **Working**:
 - Cat kidney segmentation (3 classes: background, left_kidney, right_kidney)
 - Grayscale image support with CLAHE preprocessing (clip_limit=4.0)
-- Label remapping for masks with non-standard values ([0,38,75] → [0,1,2])
+- Direct support for masks with values [0,1,2] (background, left_kidney, right_kidney)
 - Per-class Dice metrics during training (decode_head.py:339-350)
 - Early stopping (patience=3, monitors mDice)
 - Best checkpoint saving (save_best='mDice', keep last 3 regular checkpoints)
@@ -138,10 +139,10 @@ To work on:
 4. GrayscalePhotoMetricDistortion (augment brightness/contrast)
 5. RandomRotate (rotate with nearest-neighbor interpolation for masks)
 6. Resize (to 512x512)
-7. **RemapLabels** (must be here, after all transforms that touch mask)
+7. ~~RemapLabels~~ (DISABLED - masks already have [0,1,2])
 8. PackSegInputs
 
-**Why RemapLabels is last**: Transforms like RandomRotate use nearest-neighbor interpolation, but if remapping happens before, the mask only has [0,1,2] values and remapping tries to find [0,38,75] which don't exist.
+**Note**: RemapLabels was disabled after discovering the dataset already has values [0,1,2] instead of [0,38,75].
 
 ## Custom Modifications
 
