@@ -74,10 +74,8 @@ default_hooks = dict(
     ),
     visualization=dict(
         type='SegVisualizationHook',
-        draw=True,
-        interval=50,  # Save visualization every 50 iterations
-        show=False,
-        on_train=True,  # Visualize during training
-        on_val=False    # Skip visualization during validation (size mismatch issue)
+        draw=False,  # Temporarily disable to avoid size mismatch
+        interval=50,
+        show=False
     )
 )
