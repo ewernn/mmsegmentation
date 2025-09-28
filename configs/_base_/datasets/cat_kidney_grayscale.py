@@ -14,13 +14,9 @@ train_pipeline = [
     dict(type='LoadImageFromFile', color_type='grayscale'),
     dict(type='LoadAnnotations'),
     dict(type='CLAHEGrayscale', clip_limit=4.0, tile_grid_size=(8, 8)),
-    #dict(type='RandomResize', scale=img_scale, ratio_range=(0.5, 2.0), keep_ratio=False),
-    #dict(type='RandomCrop', crop_size=(256, 256), cat_max_ratio=0.75),
-    #dict(type='RandomFlip', prob=0.5, direction='horizontal'),
     dict(type='GrayscalePhotoMetricDistortion', brightness_delta=32, contrast_range=(0.5, 1.5)),
-    dict(type='RandomRotate',degree=5,prob=0.5,pad_val=0),#seg_pad_val=255),
+    dict(type='RandomRotate', degree=10, prob=0.5, pad_val=0),
     dict(type='Resize', scale=img_scale, keep_ratio=False),
-    #dict(type='Pad', size=(512, 512), pad_val=0),# seg_pad_val=255),
     dict(type='PackSegInputs')
 ]
 
