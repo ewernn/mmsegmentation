@@ -22,11 +22,8 @@ def train():
         f"optimizer.lr={config.lr}",
         f"model.decode_head.dropout_ratio={config.dropout}",
         f"train_dataloader.batch_size={config.batch_size}",
-        # Simplified loss config - just update the weights
-        f"model.decode_head.loss_decode[0].loss_weight={ce_weight:.2f}",
-        f"model.decode_head.loss_decode[0].class_weight=[1.0,{config.class_weight_kidney:.1f},{config.class_weight_kidney:.1f}]",
-        f"model.decode_head.loss_decode[1].loss_weight={config.dice_weight:.2f}",
-        # Simplified training config
+        # Skip loss_decode modifications for now - too complex for command line
+        # Just vary the simpler parameters
         "train_cfg.max_iters=4000",
         "train_cfg.val_interval=400",
     ]
@@ -71,16 +68,17 @@ def train():
         raise subprocess.CalledProcessError(result.returncode, cmd)
 
 if __name__ == "__main__":
-    # Simplified sweep focusing on most impactful params
+    # Simplified sweep focusing on params we can actually modify
     sweep_config = {
         'method': 'bayes',
         'metric': {'name': 'mDice', 'goal': 'maximize'},
         'parameters': {
             'lr': {'distribution': 'log_uniform_values', 'min': 0.005, 'max': 0.03},
-            'class_weight_kidney': {'values': [2.0, 2.5, 3.0, 3.5]},
-            'dice_weight': {'values': [0.5, 0.6, 0.7]},
             'dropout': {'values': [0.1, 0.2, 0.3]},
-            'batch_size': {'values': [4, 8]}
+            'batch_size': {'values': [4, 8]},
+            # Remove complex loss params for now
+            'dice_weight': {'values': [0.6]},  # Just use one value
+            'class_weight_kidney': {'values': [2.5]}  # Just use one value
         }
     }
 
