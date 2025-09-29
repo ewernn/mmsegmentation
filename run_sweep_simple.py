@@ -40,32 +40,18 @@ def train():
         "actual_command": " ".join(cmd)
     })
 
-    # Run training and capture output for metric logging
-    result = subprocess.run(cmd, capture_output=True, text=True, env=env)
+    # Run training WITHOUT capturing output so we see it in real-time
+    print("Starting training...")
+    result = subprocess.run(cmd, env=env)
 
-    # Parse final validation metrics from output if available
-    if result.returncode == 0:
-        output = result.stdout
-        # Look for validation metrics in the output
-        for line in output.split('\n'):
-            if 'mDice' in line and 'mIoU' in line:
-                # Parse and log metrics (MMSegmentation logs them in a specific format)
-                try:
-                    import re
-                    # Extract mDice value
-                    dice_match = re.search(r'mDice[:\s]+([0-9.]+)', line)
-                    if dice_match:
-                        wandb.log({'mDice': float(dice_match.group(1))})
-                    # Extract mIoU value
-                    iou_match = re.search(r'mIoU[:\s]+([0-9.]+)', line)
-                    if iou_match:
-                        wandb.log({'mIoU': float(iou_match.group(1))})
-                except:
-                    pass
-    else:
+    # Check if training succeeded
+    if result.returncode != 0:
         print(f"Training failed with return code {result.returncode}")
-        print(f"Error output: {result.stderr}")
         raise subprocess.CalledProcessError(result.returncode, cmd)
+    else:
+        print("Training completed successfully!")
+        # Log a final metric to indicate completion
+        wandb.log({'training_completed': 1})
 
 if __name__ == "__main__":
     # Simplified sweep focusing on params we can actually modify
@@ -83,7 +69,7 @@ if __name__ == "__main__":
     }
 
     # Initialize sweep
-    sweep_id = wandb.sweep(sweep_config, project="cat-kidney-sweep-simple")
+    sweep_id = wandb.sweep(sweep_config, project="cat-kidney-sweep-v2")
     print(f"Created sweep with ID: {sweep_id}")
 
     # Run the sweep agent
