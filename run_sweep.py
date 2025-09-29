@@ -22,11 +22,14 @@ def train():
         f"optimizer.lr={config.lr}",
         f"model.decode_head.dropout_ratio={config.dropout}",
         f"train_dataloader.batch_size={config.batch_size}",
-        # Complex nested configs need special handling
-        f"model.decode_head.loss_decode="
-        f"[dict(type='CrossEntropyLoss',use_sigmoid=False,loss_weight={ce_weight:.2f},"
-        f"class_weight=[1.0,{config.class_weight_kidney:.1f},{config.class_weight_kidney:.1f}]),"
-        f"dict(type='DiceLoss',use_sigmoid=False,loss_weight={config.dice_weight:.2f})]",
+        # Split loss_decode into separate configs to avoid nested list parsing issues
+        f"model.decode_head.loss_decode[0].type=CrossEntropyLoss",
+        f"model.decode_head.loss_decode[0].use_sigmoid=False",
+        f"model.decode_head.loss_decode[0].loss_weight={ce_weight:.2f}",
+        f"model.decode_head.loss_decode[0].class_weight=[1.0,{config.class_weight_kidney:.1f},{config.class_weight_kidney:.1f}]",
+        f"model.decode_head.loss_decode[1].type=DiceLoss",
+        f"model.decode_head.loss_decode[1].use_sigmoid=False",
+        f"model.decode_head.loss_decode[1].loss_weight={config.dice_weight:.2f}",
         # Update CLAHE in pipeline
         f"train_pipeline[2].clip_limit={config.clahe_clip_limit}",
         # Update wandb run name
