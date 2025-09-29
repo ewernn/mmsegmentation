@@ -11,7 +11,7 @@ custom_imports = dict(imports=['custom_viz_hook'], allow_failed_imports=False)
 optimizer = dict(type='SGD', lr=0.005, momentum=0.9, weight_decay=0.0005)  # Reduced LR for stability
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
-train_cfg = dict(type='IterBasedTrainLoop', max_iters=12000, val_interval=500)
+train_cfg = dict(type='IterBasedTrainLoop', max_iters=20000, val_interval=500)
 
 crop_size = (512, 512)
 data_preprocessor = dict(
@@ -53,7 +53,7 @@ visualizer = dict(
                      model_name='UNet-S5-D16',
                      dataset='cat_kidney',
                      lr=0.01,
-                     max_iters=12000,
+                     max_iters=20000,
                      clahe=True,
                      dropout=0.2,
                      class_weights=[0.5, 2.0, 2.0]
