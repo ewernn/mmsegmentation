@@ -1,0 +1,40 @@
+program: python
+method: bayes
+metric:
+  name: mDice
+  goal: maximize
+parameters:
+  lr:
+    distribution: log_uniform_values
+    min: 0.001
+    max: 0.05
+  class_weight_kidney:
+    distribution: uniform
+    min: 1.5
+    max: 4.0
+  dice_weight:
+    distribution: uniform
+    min: 0.4
+    max: 0.8
+  clahe_clip_limit:
+    distribution: uniform
+    min: 1.0
+    max: 4.0
+  dropout:
+    distribution: uniform
+    min: 0.1
+    max: 0.4
+  batch_size:
+    values: [2, 4, 8]
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - tools/train.py
+  - configs/unet/eric-unet-s5-d16_fcn_1xb4-ce-1.0-dice-3.0-40k_CAT_KIDNEY-512x512.py
+  - --cfg-options
+  - optimizer.lr=${lr}
+  - model.decode_head.loss_decode=[dict(type='CrossEntropyLoss',use_sigmoid=False,loss_weight=${ce_weight},class_weight=[1.0,${class_weight_kidney},${class_weight_kidney}]),dict(type='DiceLoss',use_sigmoid=False,loss_weight=${dice_weight})]
+  - model.decode_head.dropout_ratio=${dropout}
+  - train_dataloader.batch_size=${batch_size}
+  - train_pipeline=[dict(type='CLAHEGrayscale',clip_limit=${clahe_clip_limit})]

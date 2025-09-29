@@ -64,12 +64,12 @@ mmsegmentation/
 - `_base_/models/fcn_unet_s5-d16-1channel.py` - 1-channel grayscale UNet
 - `_base_/datasets/cat_kidney_grayscale.py` - Dataset with pipelines
 - `_base_/default_runtime.py` - Logging and checkpointing defaults
-- `_base_/schedules/schedule_20k.py` - LR scheduler (overridden to 12k)
+- `_base_/schedules/schedule_20k.py` - PolyLR scheduler with power=0.9
 
 **Key overrides**:
 - Optimizer: SGD lr=0.01, momentum=0.9, weight_decay=0.0005
-- Training: max_iters=12000, val_interval=500
-- Loss: CE (0.4 weight, class_weight=[0.5,2.0,2.0]) + Dice (0.6 weight)
+- Training: max_iters=20000, val_interval=500
+- Loss: CE (0.4 weight, class_weight=[1.0,2.5,2.5]) + Dice (0.6 weight)
 - Test mode: slide inference (crop_size=512, stride=341)
 - Dropout: 0.2 in decode head
 - Hooks: EarlyStoppingHook (patience=3), save_best='mDice', SegVisualizationHook
@@ -109,13 +109,13 @@ To work on:
 - Data preprocessor seg_pad_val was 255 causing label corruption - fixed to 0
 - Auxiliary head was missing CrossEntropyLoss with class weights - added matching main head config
 - Class weights optimized to [1.0, 2.5, 2.5] - aggressive weights [0.5, 5.0, 5.0] caused instability
-- Learning rate reduced from 0.01 to 0.005 for stability
+- Learning rate set to 0.01 with PolyLR scheduler (decays to 0.0001 over 20k iterations)
 
 ## Current Status
 
 **Working**:
 - Cat kidney segmentation (3 classes: background, left_kidney, right_kidney)
-- Grayscale image support with CLAHE preprocessing (clip_limit=4.0)
+- Grayscale image support with CLAHE preprocessing (clip_limit=2.0)
 - Direct support for masks with values [0,1,2] (background, left_kidney, right_kidney)
 - Per-class Dice metrics during training (decode_head.py:339-350)
 - Early stopping (patience=3, monitors mDice)

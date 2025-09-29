@@ -76,7 +76,7 @@ default_hooks = dict(
         type='EarlyStoppingHook',
         monitor='mDice',
         rule='greater',
-        patience=3,
+        patience=6,  # Increased from 3 to 6 for more stable training
         min_delta=0.001
     ),
     visualization=dict(
