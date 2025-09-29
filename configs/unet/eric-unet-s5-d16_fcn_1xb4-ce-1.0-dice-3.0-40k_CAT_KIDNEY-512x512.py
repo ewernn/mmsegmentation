@@ -8,7 +8,7 @@ _base_ = [
 # Import custom visualization hook
 custom_imports = dict(imports=['custom_viz_hook'], allow_failed_imports=False)
 
-optimizer = dict(type='SGD', lr=0.005, momentum=0.9, weight_decay=0.0005)  # Reduced LR for stability
+optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)  # Increased back to 0.01
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
 train_cfg = dict(type='IterBasedTrainLoop', max_iters=20000, val_interval=500)
