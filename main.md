@@ -108,7 +108,7 @@ To work on:
 - RandomRotate was using default seg_pad_val=255 causing unmapped values - fixed to seg_pad_val=0
 - Data preprocessor seg_pad_val was 255 causing label corruption - fixed to 0
 - Auxiliary head was missing CrossEntropyLoss with class weights - added matching main head config
-- Class weights increased from [0.5, 2.0, 2.0] to [0.5, 5.0, 5.0] to force kidney learning
+- Class weights optimized to [1.0, 2.5, 2.5] - aggressive weights [0.5, 5.0, 5.0] caused instability
 - Learning rate reduced from 0.01 to 0.005 for stability
 
 ## Current Status

@@ -28,13 +28,13 @@ model = dict(
         num_classes=3,
         dropout_ratio=0.2,
         loss_decode=[
-            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[0.5, 5.0, 5.0]),  # Increased kidney weights
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[1.0, 2.5, 2.5]),  # Balanced weights
             dict(type='DiceLoss', use_sigmoid=False, loss_weight=0.6)
         ]
     ),
     auxiliary_head=dict(
         num_classes=3,
-        loss_decode=dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[0.5, 5.0, 5.0])  # Match main head weights
+        loss_decode=dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.4, class_weight=[1.0, 2.5, 2.5])  # Balanced weights
     )
 )
 
