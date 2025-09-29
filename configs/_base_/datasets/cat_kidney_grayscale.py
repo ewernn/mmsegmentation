@@ -13,7 +13,7 @@ img_scale = (512, 512)  # Update this based on your image sizes
 train_pipeline = [
     dict(type='LoadImageFromFile', color_type='grayscale'),
     dict(type='LoadAnnotations'),
-    dict(type='CLAHEGrayscale', clip_limit=4.0, tile_grid_size=(8, 8)),
+    dict(type='CLAHEGrayscale', clip_limit=2.0, tile_grid_size=(8, 8)),
     dict(type='GrayscalePhotoMetricDistortion', brightness_delta=32, contrast_range=(0.5, 1.5)),
     dict(type='RandomRotate', degree=10, prob=0.5, pad_val=0, seg_pad_val=0),  # seg_pad_val=0 critical!
     dict(type='Resize', scale=img_scale, keep_ratio=False),
@@ -24,7 +24,7 @@ train_pipeline = [
 val_pipeline = [
     dict(type='LoadImageFromFile', color_type='grayscale'),
     dict(type='LoadAnnotations'),
-    dict(type='CLAHEGrayscale', clip_limit=4.0, tile_grid_size=(8, 8)),
+    dict(type='CLAHEGrayscale', clip_limit=2.0, tile_grid_size=(8, 8)),
     dict(type='Resize', scale=img_scale, keep_ratio=False),
     dict(type='ResetOriShape'),  # Keep predictions at 512x512 for validation
     # dict(type='RemapLabels', label_map={0: 0, 38: 1, 75: 2}),  # DISABLED - masks already have [0,1,2]
