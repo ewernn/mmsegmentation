@@ -72,7 +72,7 @@ mmsegmentation/
 - Loss: CE (0.4 weight, class_weight=[1.0,2.5,2.5]) + Dice (0.6 weight)
 - Test mode: slide inference (crop_size=512, stride=341)
 - Dropout: 0.2 in decode head
-- Hooks: EarlyStoppingHook (patience=3), save_best='mDice', SegVisualizationHook
+- Hooks: EarlyStoppingHook (patience=6), save_best='mDice', SegVisualizationHook
 - Logging: WandB with custom config metadata
 
 ### Model Architecture
