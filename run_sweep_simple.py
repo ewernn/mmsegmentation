@@ -17,10 +17,8 @@ def train():
 
     cmd = [
         "python3.10", "tools/train.py",
-        "configs/unet/eric-unet-s5-d16_fcn_1xb4-ce-1.0-dice-3.0-40k_CAT_KIDNEY-512x512.py",
+        "configs/unet/sweep_config.py",  # Use sweep-specific config without WandB
         "--cfg-options",
-        # Disable WandB in MMSegmentation to avoid double initialization
-        "visualizer.vis_backends=[dict(type='LocalVisBackend')]",
         f"optimizer.lr={config.lr}",
         f"model.decode_head.dropout_ratio={config.dropout}",
         f"train_dataloader.batch_size={config.batch_size}",
