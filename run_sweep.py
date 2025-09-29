@@ -16,7 +16,7 @@ def train():
     ce_weight = 1.0 - config.dice_weight
 
     cmd = [
-        "python", "tools/train.py",
+        "python3.10", "tools/train.py",
         "configs/unet/eric-unet-s5-d16_fcn_1xb4-ce-1.0-dice-3.0-40k_CAT_KIDNEY-512x512.py",
         "--cfg-options",
         f"optimizer.lr={config.lr}",
@@ -36,8 +36,12 @@ def train():
         "train_cfg.val_interval=400",  # Validate 10 times during training
     ]
 
+    # Set environment with PYTHONPATH
+    env = os.environ.copy()
+    env['PYTHONPATH'] = '/content/mmsegmentation'
+
     print(f"Running command: {' '.join(cmd)}")
-    subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True, env=env)
 
 if __name__ == "__main__":
     # Option 1: Create and run sweep
