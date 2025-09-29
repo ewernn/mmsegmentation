@@ -75,7 +75,7 @@ if __name__ == "__main__":
         'parameters': {
             'lr': {'distribution': 'log_uniform_values', 'min': 0.005, 'max': 0.03},
             'dropout': {'values': [0.1, 0.2, 0.3]},
-            'batch_size': {'values': [4, 8]},
+            'batch_size': {'values': [2, 4]},  # Reduced from [4, 8] to avoid OOM
             # Remove complex loss params for now
             'dice_weight': {'values': [0.6]},  # Just use one value
             'class_weight_kidney': {'values': [2.5]}  # Just use one value
