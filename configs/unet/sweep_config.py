@@ -6,3 +6,13 @@ visualizer = dict(
     vis_backends=[dict(type='LocalVisBackend')],  # Only local, no WandB
     name='visualizer'
 )
+
+# Fixed class weights, but loss weights will be overridden by sweep
+model = dict(
+    decode_head=dict(
+        loss_decode=[
+            dict(type='CrossEntropyLoss', use_sigmoid=False, loss_weight=0.3, class_weight=[1.0, 3.0, 3.0]),
+            dict(type='DiceLoss', use_sigmoid=False, loss_weight=0.7)
+        ]
+    )
+)
