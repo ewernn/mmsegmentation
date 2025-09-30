@@ -64,8 +64,8 @@ def train():
         f"optimizer.lr={config.lr}",
         f"model.decode_head.dropout_ratio={config.dropout}",
         f"train_dataloader.batch_size={config.batch_size}",
-        "train_cfg.max_iters=2000",  # Shorter for testing
-        "train_cfg.val_interval=200",
+        "train_cfg.max_iters=4000",  # Full training
+        "train_cfg.val_interval=400",
         "log_config.interval=50",  # Log every 50 iterations
     ]
 
@@ -124,4 +124,4 @@ if __name__ == "__main__":
     print(f"Created sweep with ID: {sweep_id}")
 
     # Run sweep agent
-    wandb.agent(sweep_id, train, count=5)  # Only 5 trials for testing
+    wandb.agent(sweep_id, train, count=15)  # 15 trials as originally planned
