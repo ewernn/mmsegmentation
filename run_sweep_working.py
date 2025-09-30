@@ -111,11 +111,11 @@ if __name__ == "__main__":
         'method': 'bayes',
         'metric': {'name': 'val_mDice', 'goal': 'maximize'},
         'parameters': {
-            'lr': {'distribution': 'log_uniform_values', 'min': 0.005, 'max': 0.02},
-            'dropout': {'values': [0.1, 0.2]},
-            'batch_size': {'values': [2, 4]},
-            'dice_weight': {'values': [0.6]},
-            'class_weight_kidney': {'values': [2.5]}
+            'lr': {'distribution': 'uniform', 'min': 0.005, 'max': 0.008},  # Narrowed around 6e-3
+            'dropout': {'values': [0.1]},  # Best performer
+            'batch_size': {'values': [2, 4]},  # Keep both options
+            'dice_weight': {'values': [0.4, 0.6, 0.7]},  # Now exploring!
+            'class_weight_kidney': {'values': [1.5, 2.5, 3.5]}  # Now exploring!
         }
     }
 
