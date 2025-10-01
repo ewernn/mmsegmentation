@@ -85,7 +85,7 @@ def train():
 
     cmd = [
         "python3.10", "tools/train.py",
-        "configs/unet/sweep_config.py",
+        "configs/unet/sweep_config_clean.py",
         "--work-dir", f"work_dirs/sweep_{run.id}",
         "--cfg-options",
         "optimizer.lr=0.0077",  # Fixed at best value
