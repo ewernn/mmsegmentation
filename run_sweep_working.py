@@ -104,6 +104,7 @@ def train():
     # Set environment
     env = os.environ.copy()
     env['PYTHONPATH'] = '/content/mmsegmentation'
+    env['MMENGINE_DISABLE_PRETTY_TEXT'] = '1'  # Disable YAPF formatting to avoid syntax errors
 
     # Print all configuration details for verification
     print("="*60)
