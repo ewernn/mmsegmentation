@@ -6,7 +6,8 @@ _base_ = [
     '../_base_/schedules/schedule_20k.py'
 ]
 
-# NO custom_imports - skip visualization hook for sweeps
+# Override custom_imports from base configs - keep cat_kidney but remove viz hook
+custom_imports = dict(imports=['mmseg.datasets.cat_kidney'], allow_failed_imports=False)
 
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
