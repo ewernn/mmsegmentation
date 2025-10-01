@@ -86,6 +86,7 @@ def train():
     cmd = [
         "python3.10", "tools/train.py",
         "configs/unet/sweep_config.py",
+        "--work-dir", f"work_dirs/sweep_{run.id}",
         "--cfg-options",
         "optimizer.lr=0.0077",  # Fixed at best value
         "model.decode_head.dropout_ratio=0.1",  # Fixed at best value
