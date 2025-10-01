@@ -95,11 +95,10 @@ def train():
         f"model.decode_head.loss_decode[0].loss_weight={ce_weight:.1f}",
         f"model.decode_head.loss_decode[1].loss_weight={config.dice_weight:.1f}",
         # Sweep CLAHE parameter (index 2 in train_pipeline confirmed)
-        f"train_pipeline[2].clip_limit={config.clahe_clip_limit}",
-        f"val_pipeline[2].clip_limit={config.clahe_clip_limit}",  # Also update validation pipeline
+        f"train_pipeline[2].clip_limit={config.clahe_clip_limit:.1f}",
+        f"val_pipeline[2].clip_limit={config.clahe_clip_limit:.1f}",  # Also update validation pipeline
         "train_cfg.max_iters=4000",
         "train_cfg.val_interval=400",
-        "log_config.interval=50",
     ]
 
     # Set environment
