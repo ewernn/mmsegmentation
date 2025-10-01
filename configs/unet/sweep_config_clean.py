@@ -40,8 +40,11 @@ model = dict(
     )
 )
 
-# Disable WandB visualizer for sweep
-vis_backends = [dict(type='LocalVisBackend')]
+# Enable WandB for metric logging
+vis_backends = [
+    dict(type='LocalVisBackend'),
+    dict(type='WandbVisBackend', init_kwargs=dict(project='cat-kidney-sweep'))
+]
 visualizer = dict(
     type='SegLocalVisualizer',
     vis_backends=vis_backends,

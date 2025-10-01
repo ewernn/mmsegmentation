@@ -17,7 +17,8 @@ def train():
 
     cmd = [
         "python3.10", "tools/train.py",
-        "configs/unet/sweep_config.py",  # Use sweep-specific config without WandB
+        "configs/unet/sweep_config_clean.py",  # Use clean config with WandB enabled
+        "--work-dir", f"work_dirs/sweep_{run.id}",
         "--cfg-options",
         f"optimizer.lr={config.lr}",
         f"model.decode_head.dropout_ratio={config.dropout}",
