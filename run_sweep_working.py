@@ -32,7 +32,7 @@ def parse_metrics_from_line(line):
         # Extract dice scores
         dice_scores = []
         for i in range(3):
-            dice_match = re.search(rf'dice_class_{i}:\s*([\d.]+)', line)
+            dice_match = re.search(rf'decode\.dice_class_{i}:\s*([\d.]+)', line)
             if dice_match:
                 metrics[f'dice_class_{i}'] = float(dice_match.group(1))
                 if i > 0:  # Only kidney classes (1 and 2)
@@ -44,12 +44,18 @@ def parse_metrics_from_line(line):
 
     # Validation metrics pattern
     elif "Iter(val)" in line or "mDice" in line:
-        # Extract per-class Dice scores if available
+        # Extract per-class Dice scores from table format
         dice_scores = []
-        for i in range(1, 3):  # Only kidney classes
-            dice_match = re.search(rf'Dice\..*class_{i}[:\s]+([\d.]+)', line)
-            if not dice_match:
-                dice_match = re.search(rf'dice_class_{i}[:\s]+([\d.]+)', line)
+
+        # For left_kidney (class 1)
+        if 'left_kidney' in line:
+            dice_match = re.search(r'\|\s*left_kidney\s*\|\s*([\d.]+)', line)
+            if dice_match:
+                dice_scores.append(float(dice_match.group(1)))
+
+        # For right_kidney (class 2)
+        if 'right_kidney' in line:
+            dice_match = re.search(r'\|\s*right_kidney\s*\|\s*([\d.]+)', line)
             if dice_match:
                 dice_scores.append(float(dice_match.group(1)))
 
