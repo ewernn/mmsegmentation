@@ -9,6 +9,14 @@ _base_ = [
 # Override custom_imports from base configs - keep cat_kidney but remove viz hook
 custom_imports = dict(imports=['mmseg.datasets.cat_kidney'], allow_failed_imports=False)
 
+# Disable environment logging to avoid YAPF pretty_text error
+env_cfg = dict(
+    cudnn_benchmark=True,
+    mp_cfg=dict(mp_start_method='fork', opencv_num_threads=0),
+    dist_cfg=dict(backend='nccl'),
+)
+log_level = 'INFO'
+
 optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0005)
 optim_wrapper = dict(type='OptimWrapper', optimizer=optimizer, clip_grad=None)
 
